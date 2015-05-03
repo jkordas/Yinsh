@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="core" type="PythonConfigurationType" factoryName="Python">
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="GST_REGISTRY_FORK" value="no" />
+      <env name="GST_PLUGIN_SCANNER" value="/Applications/Kivy.app/Contents/Resources/lib/bin/gst-plugin-scanner" />
+      <env name="LD_PRELOAD_PATH" value="/Applications/Kivy.app/Contents/Resources/lib:" />
+      <env name="GST_PLUGIN_PATH" value="/Applications/Kivy.app/Contents/Resources/lib/gst-plugins:" />
+      <env name="PYTHONPATH" value="/Applications/Kivy.app/Contents/Resources/kivy:/Applications/Kivy.app/Contents/Resources/lib/sitepackages:/usr/local/lib/python:" />
+      <env name="DYLD_FALLBACK_LIBRARY_PATH" value="/Applications/Kivy.app/Contents/Resources/lib:" />
+    </envs>
+    <option name="SDK_HOME" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="IS_MODULE_SDK" value="true" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <module name="Yinsh" />
+    <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game.py" />
+    <option name="PARAMETERS" value="" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <RunnerSettings RunnerId="PythonRunner" />
+    <ConfigurationWrapper RunnerId="PythonRunner" />
+    <method />
+  </configuration>
+</component>
