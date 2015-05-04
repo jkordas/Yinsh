@@ -16,33 +16,38 @@ class Game(object):
         placement_moves = 5
         for i in range(0, placement_moves):
             # white placement
-            move = self.white_player.placement_move(i)
-            self.board.place_white_open(move)
+            self._single_placement(self.white_player, i)
 
             # black placement
-            move = self.black_player.placement_move(i)
-            self.board.place_black_open(move)
-            self.board.show()
+            self._single_placement(self.black_player, i)
+
         print "Placement phase finished."
 
         # movement phase
+        i = 0  # for test purpose
         while not self.finished:
             # check if markers are available
             if not self.board.is_marker_available():
                 self.finished = True
-                # check who wins
+                # TODO check who wins
                 break
 
             # show board
             self.board.show()
 
             # white moves
-            ring_move = self.white_player.ring_move()
-            self.board.move_white_ring(ring_move)
+            ring_move = self.white_player.ring_move(i)
+            self.board.move_ring(self.white_player, ring_move)
+            # TODO check if 5 in row occurred for player or opponent
 
             # show board
             # black moves
-            pass
+            # TODO
 
+            i += 1
 
+    def _single_placement(self, player, index):
+        self.board.show()
+        move = player.placement_move(index)
+        self.board.place_ring(player, move)
 
