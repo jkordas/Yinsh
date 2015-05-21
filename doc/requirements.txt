@@ -1,0 +1,7 @@
+Kod musi działać
+Kod powinien zawierać co najmniej 300 linii (kodu) / osobę
+Kod powinien przechodzić ocenę pylinta na 100% [z dokładnością do błędów zwracanych przez zewnętrzne biblioteki]
+Należy wykorzystać paradygmat programowania obiektowego
+Kod powinien zawierać unit testy
+Dostarczenie dokumentacji/opisu projektu
+Zalecane jest trzymanie projektu jako otwartego repozytorium na githubie

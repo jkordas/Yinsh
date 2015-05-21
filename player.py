@@ -1,6 +1,5 @@
 from move import PlacementMove, RingMove
-
-__author__ = 'jkordas'
+import time
 
 
 class PlayerType(object):
@@ -16,8 +15,14 @@ class Player(object):
         return self.type
 
     def placement_move(self, iteration):
-        # TODO get user input
-        pass
+        print "Player: {0}".format(self.name)
+        print "Placement Type: {0}".format("PlacementMove")
+        input_text = raw_input("Position (eg. 1 3): ")
+        input_array = input_text.split(" ")
+        assert (len(input_array) == 2)
+
+        # TODO: validate
+        return PlacementMove(int(input_array[0]), int(input_array[1]))
 
     def ring_move(self, iteration):
         # TODO get user input
@@ -43,6 +48,7 @@ class WhitePlayerStub(Player):
     def ring_move(self, iteration):
         if iteration == 0:
             return RingMove(4, 2, 4, 0)
+        time.sleep(0.5)  # to get exception at the end of output
         raise AssertionError('Not ready yet')
 
 

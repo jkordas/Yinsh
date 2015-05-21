@@ -54,10 +54,11 @@ class Board(object):
 
         end_x = ring_move.get_end_x()
         end_y = ring_move.get_end_y()
-        self._check_position_empty(player, end_x, end_y)
+        self._check_position_empty(end_x, end_y)
 
         # TODO check if not to many empty fields jumped
-        # TODO is jump over ring correct?
+        self._get_jumped_line(start_x, start_y, end_x, end_y)
+        # TODO jump over ring is incorrect?
 
         # we are sure move is correct
 
@@ -72,9 +73,13 @@ class Board(object):
         Board._check_position_in_range(x, y)
 
         # check if empty field
-        Board._check_position_empty(x, y)
+        self._check_position_empty(x, y)
 
         self.board[y][x] = sign
+
+    def get_field(self, x, y):
+        Board._check_position_in_range(x, y)
+        return self.board[y][x]
 
     def _place_marker(self, player, placement_move):
         # TODO
@@ -96,3 +101,34 @@ class Board(object):
         Board._check_position_in_range(x, y)
         if self.board[y][x] != Board._SIGNS[player.get_type() + '_RING']:
             raise ValueError("Field x: {0}, y: {1} is not owned by player.".format(x, y))
+
+    def _get_jumped_line(self, start_x, start_y, end_x, end_y):
+        if start_x == end_x:  # vertical line
+            low = max(start_y, end_y)  # horizontal low
+            high = min(start_y, end_y)  # horizontal high
+            line = [self.board[i][start_x] for i in range(high + 2, low, 2)]
+            return line
+
+        if start_y > end_y:  # going up horizontal
+            low_x = start_x
+            low_y = start_y
+            high_x = end_x
+            high_y = end_y
+        else:
+            low_x = end_x
+            low_y = end_y
+            high_x = start_x
+            high_y = start_y
+
+        line = []
+        # check direction
+        if low_x < high_x:
+            # right
+            for i in range(1, low_y - high_y):
+                line.append(self.board[low_y - i][low_x + i])
+            return line
+        else:
+            # left
+            for i in range(1, low_y - high_y):
+                line.append(self.board[low_y - i][low_x - i])
+            return line

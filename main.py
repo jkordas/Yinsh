@@ -1,10 +1,8 @@
 from game import Game
-from player import WhitePlayerStub, BlackPlayerStub
+from player import Player, PlayerType
 
-__author__ = 'jkordas'
-
-player1 = WhitePlayerStub()
-player2 = BlackPlayerStub()
+player1 = Player("White", PlayerType.WHITE)
+player2 = Player("Black", PlayerType.BLACK)
 
 game = Game(player1, player2)
 game.start()
