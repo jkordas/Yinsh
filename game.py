@@ -13,7 +13,7 @@ class Game(object):
 
     def start(self):
         # placement phase
-        placement_moves = 5
+        placement_moves = 1  # TODO: only for test! change to 5
         for i in range(0, placement_moves):
             # white placement
             self._single_placement(self.white_player, i)
@@ -48,6 +48,10 @@ class Game(object):
 
     def _single_placement(self, player, index):
         self.board.show()
-        move = player.placement_move(index)
-        self.board.place_ring(player, move)
-
+        while True:
+            try:
+                move = player.placement_move(index)
+                self.board.place_ring(player, move)
+                break
+            except ValueError as e:
+                print "Wrong move: ", e, " Try again."
