@@ -2,6 +2,9 @@ __author__ = 'jkordas'
 
 
 class Board(object):
+    """
+    Game board representation.
+    """
     _SIZE_X = 11
     _SIZE_Y = 19
     _BOARD_TEMPLATE = [[4, 6], [3, 5, 7], [2, 4, 6, 8], [1, 3, 5, 7, 9], [2, 4, 6, 8], [1, 3, 5, 7, 9],

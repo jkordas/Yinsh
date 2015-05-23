@@ -1,15 +1,24 @@
-from move import PlacementMove, RingMove
 import time
+
+from move import PlacementMove, RingMove
 
 
 class PlayerType(object):
+    """
+    Enum contains possible player types
+    """
     WHITE = "WHITE"
     BLACK = 'BLACK'
 
+
 class Player(object):
-    def __init__(self, name, type):
+    """
+    Represents game player. Responsible for gathering user moves.
+    """
+
+    def __init__(self, name, _type):
         self.name = name
-        self.type = type
+        self.type = _type
 
     def get_type(self):
         return self.type
@@ -42,6 +51,9 @@ class Player(object):
 
 
 class WhitePlayerStub(Player):
+    """
+    White player stub for test purpose.
+    """
     def __init__(self):
         Player.__init__(self, "WhitePlayerStub", PlayerType.WHITE)
 
@@ -65,6 +77,9 @@ class WhitePlayerStub(Player):
 
 
 class BlackPlayerStub(Player):
+    """
+    Black player stub for test purpose.
+    """
     def __init__(self):
         Player.__init__(self, "WhitePlayerStub", PlayerType.BLACK)
 

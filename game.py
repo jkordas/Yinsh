@@ -4,6 +4,9 @@ __author__ = 'jkordas'
 
 
 class Game(object):
+    """
+    Game manager class.
+    """
     def __init__(self, player1, player2):
         self.white_player = player1
         self.black_player = player2
@@ -13,7 +16,7 @@ class Game(object):
 
     def start(self):
         # placement phase
-        placement_moves = 1  # TODO: only for test! change to 5
+        placement_moves = 5  # TODO: only for test! change to 5
         for i in range(0, placement_moves):
             # white placement
             self._single_placement(self.white_player, i)

@@ -2,6 +2,9 @@ __author__ = 'jkordas'
 
 
 class PlacementMove(object):
+    """
+    Represents position where ring should be placed at placement phase
+    """
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -14,6 +17,9 @@ class PlacementMove(object):
 
 
 class RingMove(object):
+    """
+    Represents start position where marker should be added and end position where ring should be finally placed
+    """
     def __init__(self, start_x, start_y, end_x, end_y):
         self.start_x = start_x
         self.start_y = start_y
