@@ -1,3 +1,5 @@
+from move import PlacementMove
+
 __author__ = 'jkordas'
 
 
@@ -31,6 +33,61 @@ class Board(object):
         if not Board._is_position_in_range(x, y):
             raise ValueError("Position x: {0}, y: {1} is not in board range.".format(x, y))
 
+    @staticmethod
+    def _check_empty_fields(line):
+        is_empty_acceptable = True
+        for field in line:
+            if field == Board._EMPTY_FIELD:
+                if not is_empty_acceptable:
+                    raise ValueError("Too many empty fields.")
+            else:
+                is_empty_acceptable = False
+
+    @staticmethod
+    def _check_jump_over_ring(line):
+        if Board._SIGNS['WHITE_RING'] in line or Board._SIGNS['BLACK_RING'] in line:
+            raise ValueError("Cannot jump over rings.")
+
+    @staticmethod
+    def _get_jumped_line_indexes(start_x, start_y, end_x, end_y):
+        if start_x == end_x and start_y == end_y:
+            raise ValueError("Start and stop position have to be different.")
+
+        if start_x == end_x:  # vertical line
+            low = max(start_y, end_y)  # horizontal low
+            high = min(start_y, end_y)  # horizontal high
+            line = [(i, start_x) for i in range(high + 2, low, 2)]
+            return line
+        reverse = False
+
+        if start_y > end_y:  # going up horizontal
+            low_x = start_x
+            low_y = start_y
+            high_x = end_x
+            high_y = end_y
+        else:
+            low_x = end_x
+            low_y = end_y
+            high_x = start_x
+            high_y = start_y
+            reverse = True
+
+        line = []
+        # check direction
+        if low_x < high_x:
+            # right
+            for i in range(1, low_y - high_y):
+                line.append((low_y - i, low_x + i))
+        else:
+            # left
+            for i in range(1, low_y - high_y):
+                line.append((low_y - i, low_x - i))
+
+        if reverse:
+            line.reverse()
+
+        return line
+
     def __init__(self):
         self.board = [[' ' for _ in range(Board._SIZE_X)] for _ in range(Board._SIZE_Y)]
         for index, row in enumerate(Board._BOARD_TEMPLATE):
@@ -59,25 +116,23 @@ class Board(object):
         end_y = ring_move.get_end_y()
         self._check_position_empty(end_x, end_y)
 
-        # TODO check if not to many empty fields jumped
-        self._get_jumped_line(start_x, start_y, end_x, end_y)
-        # TODO jump over ring is incorrect?
+        jumped_line = self._get_jumped_line(start_x, start_y, end_x, end_y)
+        self._check_empty_fields(jumped_line)  # check if not to many empty fields jumped
+        self._check_jump_over_ring(jumped_line)  # jump over ring is incorrect
 
         # we are sure move is correct
-
-        # TODO perform the move
-
+        # perform the move
+        self._place_marker(player, PlacementMove(start_x, start_y))
+        self.place_ring(player, PlacementMove(end_x, end_y))
+        self._switch_markers(ring_move)  # switch markers in line
 
     def place_ring(self, player, placement_move):
         sign = Board._SIGNS[player.get_type() + '_RING']
         x = placement_move.get_x()
         y = placement_move.get_y()
-        # check if in range
-        Board._check_position_in_range(x, y)
 
-        # check if empty field
-        self._check_position_empty(x, y)
-
+        Board._check_position_in_range(x, y)  # check if in range
+        self._check_position_empty(x, y)  # check if empty field
         self.board[y][x] = sign
 
     def get_field(self, x, y):
@@ -85,12 +140,26 @@ class Board(object):
         return self.board[y][x]
 
     def _place_marker(self, player, placement_move):
-        # TODO
-        pass
+        sign = Board._SIGNS[player.get_type() + '_MARKER']
+        x = placement_move.get_x()
+        y = placement_move.get_y()
 
-    def _switch_marker(self, player, placement_move):
-        # TODO
-        pass
+        Board._check_position_in_range(x, y)  # check if in range
+        self._check_position_owned(player, x, y)  # check if own field
+        self.board[y][x] = sign
+
+    def _switch_markers(self, ring_move):
+        start_x = ring_move.get_start_x()
+        start_y = ring_move.get_start_y()
+        end_x = ring_move.get_end_x()
+        end_y = ring_move.get_end_y()
+
+        line_indexes = self._get_jumped_line_indexes(start_x, start_y, end_x, end_y)
+        for index_tuple in line_indexes:
+            if self.board[index_tuple[0]][index_tuple[1]] == Board._SIGNS['WHITE_MARKER']:
+                self.board[index_tuple[0]][index_tuple[1]] = Board._SIGNS['BLACK_MARKER']
+            elif self.board[index_tuple[0]][index_tuple[1]] == Board._SIGNS['BLACK_MARKER']:
+                self.board[index_tuple[0]][index_tuple[1]] = Board._SIGNS['WHITE_MARKER']
 
     def is_marker_available(self):
         return Board._MARKERS_NUMBER - self.used_markers > 0
@@ -106,32 +175,12 @@ class Board(object):
             raise ValueError("Field x: {0}, y: {1} is not owned by player.".format(x, y))
 
     def _get_jumped_line(self, start_x, start_y, end_x, end_y):
-        if start_x == end_x:  # vertical line
-            low = max(start_y, end_y)  # horizontal low
-            high = min(start_y, end_y)  # horizontal high
-            line = [self.board[i][start_x] for i in range(high + 2, low, 2)]
-            return line
+        line_indexes = Board._get_jumped_line_indexes(start_x, start_y, end_x, end_y)
+        line = [self.board[index_tuple[0]][index_tuple[1]] for index_tuple in line_indexes]
+        return line
 
-        if start_y > end_y:  # going up horizontal
-            low_x = start_x
-            low_y = start_y
-            high_x = end_x
-            high_y = end_y
-        else:
-            low_x = end_x
-            low_y = end_y
-            high_x = start_x
-            high_y = start_y
+    def how_many_fives_in_row(self, player):
+        # check vertical
 
-        line = []
-        # check direction
-        if low_x < high_x:
-            # right
-            for i in range(1, low_y - high_y):
-                line.append(self.board[low_y - i][low_x + i])
-            return line
-        else:
-            # left
-            for i in range(1, low_y - high_y):
-                line.append(self.board[low_y - i][low_x - i])
-            return line
+        # check diagonal
+        return 0

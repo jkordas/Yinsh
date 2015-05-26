@@ -35,18 +35,8 @@ class Game(object):
                 # TODO check who wins
                 break
 
-            # show board
-            self.board.show()
-
-            # white moves
-            ring_move = self.white_player.ring_move(i)
-            self.board.move_ring(self.white_player, ring_move)
-            # TODO check if 5 in row occurred for player or opponent
-
-            # show board
-            # black moves
-            # TODO
-
+            self._move_and_check_situation(self.white_player, i)  # white moves
+            self._move_and_check_situation(self.black_player, i)  # black moves
             i += 1
 
     def _single_placement(self, player, index):
@@ -58,3 +48,32 @@ class Game(object):
                 break
             except ValueError as e:
                 print "Wrong move: ", e, " Try again."
+
+    def _single_ring_move(self, player, index):
+        self.board.show()
+        while True:
+            try:
+                ring_move = player.ring_move(index)
+                self.board.move_ring(player, ring_move)
+                break
+            except ValueError as e:
+                print "Wrong move: ", e, " Try again."
+
+    def _move_and_check_situation(self, player, index):
+        self._single_ring_move(player, index)
+
+        # TODO check if 5 in row occurred for player or opponent
+        player_fives = self.board.how_many_fives_in_row(player)
+        if player_fives > 0:
+            # TODO
+            pass
+
+        if player == self.white_player:
+            opponent = self.black_player
+        else:
+            opponent = self.white_player
+
+        opponent_fives = self.board.how_many_fives_in_row(opponent)
+        if opponent_fives > 0:
+            # TODO
+            pass

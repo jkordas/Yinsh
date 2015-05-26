@@ -97,5 +97,5 @@ class BlackPlayerStub(Player):
 
     def ring_move(self, iteration):
         if iteration == 0:
-            return RingMove(4, 10, 4, 8)
+            return RingMove(8, 10, 4, 8)
         raise AssertionError('Not ready yet')
