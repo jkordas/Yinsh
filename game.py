@@ -15,6 +15,7 @@ class Game(object):
         self.winner = None
 
     def start(self):
+        Board.show_intro()
         # placement phase
         placement_moves = 5  # TODO: only for test! change to 5
         for i in range(0, placement_moves):

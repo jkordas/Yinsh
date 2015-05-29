@@ -23,6 +23,16 @@ class Board(object):
     _MARKERS_NUMBER = 51
 
     @staticmethod
+    def show_intro():
+        print " ___________________________"
+        print "|                           |"
+        print "|           Yinsh           |"
+        print "|___________________________|"
+        for elem in sorted(Board._SIGNS):
+            print "  {0}: {1}".format(elem, Board._SIGNS[elem])
+        print
+
+    @staticmethod
     def _is_position_in_range(x, y):
         if y >= len(Board._BOARD_TEMPLATE):
             return False
@@ -112,8 +122,8 @@ class Board(object):
         self.used_markers = 0
 
     def show(self):
-        print " ---------------------------"
-        print "|    0 1 2 3 4 5 6 7 8 9 10 |"
+        print " -----------------------------"
+        print "|    0 1 2 3 4 5 6 7 8 9 10   |"
         for index, row in enumerate(self.board):
             line = "|"
             if index < 10:
@@ -121,7 +131,12 @@ class Board(object):
             print line, index,
             for item in row:
                 print item,
-            print " |"
+            if index < 10:
+                print "  {0}|".format(index)
+            else:
+                print " {0}|".format(index)
+        print "|    0 1 2 3 4 5 6 7 8 9 10   |"
+        print " -----------------------------"
 
     def move_ring(self, player, ring_move):
         start_x = ring_move.get_start_x()
