@@ -24,6 +24,8 @@ class Board(object):
 
     @staticmethod
     def _is_position_in_range(x, y):
+        if y >= len(Board._BOARD_TEMPLATE):
+            return False
         if x not in Board._BOARD_TEMPLATE[y]:
             return False
         return True
@@ -47,6 +49,20 @@ class Board(object):
     def _check_jump_over_ring(line):
         if Board._SIGNS['WHITE_RING'] in line or Board._SIGNS['BLACK_RING'] in line:
             raise ValueError("Cannot jump over rings.")
+
+    @staticmethod
+    def _count_fives_in_line(player, line):
+        counter = 0
+        max_counter = 0
+        for elem in line:
+            if elem == Board._SIGNS[player.get_type() + '_MARKER']:
+                counter += 1
+            else:
+                counter = 0
+
+            if counter > max_counter:
+                max_counter = counter
+        return max_counter
 
     @staticmethod
     def _get_jumped_line_indexes(start_x, start_y, end_x, end_y):
@@ -180,7 +196,27 @@ class Board(object):
         return line
 
     def how_many_fives_in_row(self, player):
+        fives_counter = 0
         # check vertical
+        for x in range(Board._SIZE_X):
+            line = [self.board[i][x] for i in range(Board._SIZE_Y) if (i + x % 2) % 2 == 0]
+            max_counter = Board._count_fives_in_line(player, line)
+            if max_counter >= 5:
+                fives_counter += (max_counter - 4)
 
         # check diagonal
-        return 0
+        # down
+        for index in range(-4, 14):
+            line = [self.board[index + i][i] for i in range(Board._SIZE_X) if Board._is_position_in_range(i, index + i)]
+            max_counter = Board._count_fives_in_line(player, line)
+            if max_counter >= 5:
+                fives_counter += (max_counter - 4)
+
+        # up
+        for index in range(6, 24):
+            line = [self.board[index - i][i] for i in range(Board._SIZE_X) if Board._is_position_in_range(i, index - i)]
+            max_counter = Board._count_fives_in_line(player, line)
+            if max_counter >= 5:
+                fives_counter += (max_counter - 4)
+
+        return fives_counter

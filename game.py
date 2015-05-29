@@ -59,21 +59,28 @@ class Game(object):
             except ValueError as e:
                 print "Wrong move: ", e, " Try again."
 
-    def _move_and_check_situation(self, player, index):
-        self._single_ring_move(player, index)
-
-        # TODO check if 5 in row occurred for player or opponent
-        player_fives = self.board.how_many_fives_in_row(player)
-        if player_fives > 0:
-            # TODO
-            pass
-
+    def _get_opponent(self, player):
         if player == self.white_player:
             opponent = self.black_player
         else:
             opponent = self.white_player
 
-        opponent_fives = self.board.how_many_fives_in_row(opponent)
+        return opponent
+
+    def _move_and_check_situation(self, player, index):
+        self._single_ring_move(player, index)
+
+        # check if 5 in row occurred for player or opponent
+        player_fives = self.board.how_many_fives_in_row(player)
+        if player_fives > 0:
+            # TODO
+            if player_fives == 1:
+                pass  # TODO delete five and add point
+            elif player_fives > 1:
+                pass  # TODO let player choose
+            pass
+
+        opponent_fives = self.board.how_many_fives_in_row(self._get_opponent(player))
         if opponent_fives > 0:
             # TODO
             pass

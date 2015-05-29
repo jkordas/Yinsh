@@ -1,7 +1,8 @@
+import unittest
+
 from board import Board
 from move import PlacementMove, RingMove
 from player import Player, PlayerType
-import unittest
 
 
 class BoardTest(unittest.TestCase):
@@ -74,35 +75,66 @@ class BoardTest(unittest.TestCase):
 
     def test_fives_in_row_vertical(self):
         self.board.place_ring(self.black_player, PlacementMove(2, 2))
+        self.board._place_marker(self.black_player, PlacementMove(2, 2))
         self.board.place_ring(self.black_player, PlacementMove(2, 4))
+        self.board._place_marker(self.black_player, PlacementMove(2, 4))
 
         self.assertEqual(0, self.board.how_many_fives_in_row(self.black_player))
         self.assertEqual(0, self.board.how_many_fives_in_row(self.white_player))
 
         self.board.place_ring(self.black_player, PlacementMove(2, 6))
+        self.board._place_marker(self.black_player, PlacementMove(2, 6))
         self.board.place_ring(self.black_player, PlacementMove(2, 8))
+        self.board._place_marker(self.black_player, PlacementMove(2, 8))
         self.board.place_ring(self.black_player, PlacementMove(2, 10))
+        self.board._place_marker(self.black_player, PlacementMove(2, 10))
         self.assertEqual(1, self.board.how_many_fives_in_row(self.black_player))
         self.assertEqual(0, self.board.how_many_fives_in_row(self.white_player))
 
         self.board.place_ring(self.black_player, PlacementMove(2, 12))
+        self.board._place_marker(self.black_player, PlacementMove(2, 12))
         self.assertEqual(2, self.board.how_many_fives_in_row(self.black_player))
         self.assertEqual(0, self.board.how_many_fives_in_row(self.white_player))
 
     def test_fives_in_row_diagonal(self):
         self.board.place_ring(self.white_player, PlacementMove(2, 2))
+        self.board._place_marker(self.white_player, PlacementMove(2, 2))
         self.board.place_ring(self.white_player, PlacementMove(4, 4))
+        self.board._place_marker(self.white_player, PlacementMove(4, 4))
 
         self.assertEqual(0, self.board.how_many_fives_in_row(self.black_player))
         self.assertEqual(0, self.board.how_many_fives_in_row(self.white_player))
 
         self.board.place_ring(self.white_player, PlacementMove(3, 3))
+        self.board._place_marker(self.white_player, PlacementMove(3, 3))
         self.board.place_ring(self.white_player, PlacementMove(5, 5))
+        self.board._place_marker(self.white_player, PlacementMove(5, 5))
         self.board.place_ring(self.white_player, PlacementMove(6, 6))
+        self.board._place_marker(self.white_player, PlacementMove(6, 6))
         self.assertEqual(1, self.board.how_many_fives_in_row(self.white_player))
         self.assertEqual(0, self.board.how_many_fives_in_row(self.black_player))
 
         self.board.place_ring(self.white_player, PlacementMove(7, 7))
+        self.board._place_marker(self.white_player, PlacementMove(7, 7))
+        self.assertEqual(2, self.board.how_many_fives_in_row(self.white_player))
+        self.assertEqual(0, self.board.how_many_fives_in_row(self.black_player))
+
+    def test_fives_in_row_diagonal_edge(self):
+        self.board.place_ring(self.white_player, PlacementMove(4, 0))
+        self.board._place_marker(self.white_player, PlacementMove(4, 0))
+        self.board.place_ring(self.white_player, PlacementMove(5, 1))
+        self.board._place_marker(self.white_player, PlacementMove(5, 1))
+        self.board.place_ring(self.white_player, PlacementMove(6, 2))
+        self.board._place_marker(self.white_player, PlacementMove(6, 2))
+        self.board.place_ring(self.white_player, PlacementMove(7, 3))
+        self.board._place_marker(self.white_player, PlacementMove(7, 3))
+        self.board.place_ring(self.white_player, PlacementMove(8, 4))
+        self.board._place_marker(self.white_player, PlacementMove(8, 4))
+        self.assertEqual(1, self.board.how_many_fives_in_row(self.white_player))
+        self.assertEqual(0, self.board.how_many_fives_in_row(self.black_player))
+
+        self.board.place_ring(self.white_player, PlacementMove(9, 5))
+        self.board._place_marker(self.white_player, PlacementMove(9, 5))
         self.assertEqual(2, self.board.how_many_fives_in_row(self.white_player))
         self.assertEqual(0, self.board.how_many_fives_in_row(self.black_player))
 
