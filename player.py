@@ -19,9 +19,16 @@ class Player(object):
     def __init__(self, name, _type):
         self.name = name
         self.type = _type
+        self.points = 0
 
     def get_type(self):
         return self.type
+
+    def get_points(self):
+        return self.points
+
+    def add_point(self):
+        self.points += 1
 
     def placement_move(self, iteration):
         print "Player: {0}".format(self.name)
@@ -48,6 +55,20 @@ class Player(object):
 
         return RingMove(int(start_input_array[0]), int(start_input_array[1]),
                         int(end_input_array[0]), int(end_input_array[1]))
+
+    def ring_remove(self, index):
+        print "Player: {0}".format(self.name)
+        print "Placement Type: {0}".format("Ring remove")
+        input_text = raw_input("Position (x y - separated with space): ")
+        input_array = input_text.split(" ")
+        if len(input_array) != 2:
+            raise ValueError('Provide 2 numbers separated with space.')
+
+        return PlacementMove(int(input_array[0]), int(input_array[1]))
+
+    def five_in_row_choose(self):
+        # TODO
+        pass
 
 
 class WhitePlayerStub(Player):
@@ -81,7 +102,7 @@ class BlackPlayerStub(Player):
     Black player stub for test purpose.
     """
     def __init__(self):
-        Player.__init__(self, "WhitePlayerStub", PlayerType.BLACK)
+        Player.__init__(self, "BlackPlayerStub", PlayerType.BLACK)
 
     def placement_move(self, iteration):
         if iteration == 0:

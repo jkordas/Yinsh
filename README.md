@@ -17,21 +17,67 @@ victory-but also makes you weaker, because you have one less ring to play with. 
 
 ##Project description
 
-ASCII game version. ...
+Whole game is displayed in text (ASCII) version. Two players make their moves alternately. Each move is preceded by
+short note about current player, type of movement and allowable input.
 
 ###How to play
 
-All stages described 
-...
+Game starts with short intro with title and players rings and markers symbols.<br />
+![Intro](./res/intro.png "Intro")
 
-
+Before each move board in current state is displayed. At the beginning it is empty board.<br />
 ![Board](./res/board.png "Board")
+
+Board is followed by next movement note.<br />
+![Single placement](./res/single_placement.png "Single placement")
+
+After correct move input, appropriate symbol is placed at given position and board is redrawn.<br />
+![Single placement result](./res/single_placement_result.png "Single placement result")
+
+When each player place all rings on board, placement phase is finished.<br />
+![Placement phase finished](./res/placement_phase_finished.png "Placement phase finished")
+
+Then ring movement phase is continued until one of the players wins or all of markers are used.<br />
+![Single ring move](./res/single_ring_move.png "Single ring move")
+
+
+As long as given position is incorrect, player will be asked for new one.<br />
+![Wrong position examples](./res/wrong_position_examples.png "Wrong position examples")
+
 
 ###Code
 
-Classes ...
+Project consist of following classes:
 
-Tests ...
+game.py:
 
-Pylint ...
+* Game - general game logic
+
+board.py
+
+* Board - specific board logic
+
+player.py:
+
+* Player - handles user input
+* PlayerType - enum
+* WhitePlayerStub - white player stub for demo purpose
+* BlackPlayerStub - black player stub for demo purpose
+
+move.py
+
+*  PlacementMove - Ring placement move representation (first 5 moves)
+*  RingMove - Ring movement representation (rest of the moves)
+
+main.py - run typical game<br />
+demo.py - run test demo
+
+All test included in test directory.<br />
+
+### Unimplemented functionality
+
+* Possibility to let user choose which row to delete
+* Display user points, left markers
+* Add more unit tests
+* Complete playerStub classes for full game demo purpose
 

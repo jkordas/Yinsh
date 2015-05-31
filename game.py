@@ -1,4 +1,4 @@
-from board import Board
+from board import Board, BoardUtils
 
 __author__ = 'jkordas'
 
@@ -15,7 +15,7 @@ class Game(object):
         self.winner = None
 
     def start(self):
-        Board.show_intro()
+        BoardUtils.show_intro()
         # placement phase
         placement_moves = 5  # TODO: only for test! change to 5
         for i in range(0, placement_moves):
@@ -60,6 +60,16 @@ class Game(object):
             except ValueError as e:
                 print "Wrong move: ", e, " Try again."
 
+    def _single_ring_remove(self, player, index):
+        self.board.show()
+        while True:
+            try:
+                ring_remove = player.ring_remove(index)
+                self.board.remove_ring(player, ring_remove)
+                break
+            except ValueError as e:
+                print "Wrong move: ", e, " Try again."
+
     def _get_opponent(self, player):
         if player == self.white_player:
             opponent = self.black_player
@@ -74,12 +84,16 @@ class Game(object):
         # check if 5 in row occurred for player or opponent
         player_fives = self.board.how_many_fives_in_row(player)
         if player_fives > 0:
-            # TODO
             if player_fives == 1:
-                pass  # TODO delete five and add point
+                self.board.delete_row(self.board.get_fives_in_row_indexes(player)[0])  # delete row
             elif player_fives > 1:
                 pass  # TODO let player choose
-            pass
+
+            # remove ring
+            self._single_ring_remove(player, index)
+
+            # add point
+            player.add_point()
 
         opponent_fives = self.board.how_many_fives_in_row(self._get_opponent(player))
         if opponent_fives > 0:
