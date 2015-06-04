@@ -1,0 +1,3 @@
+"""
+Main yinsh game module
+"""

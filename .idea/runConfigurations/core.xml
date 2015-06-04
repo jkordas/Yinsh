@@ -18,7 +18,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="Yinsh" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game.py" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game_logic/game.py" />
     <option name="PARAMETERS" value="" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <RunnerSettings RunnerId="PythonRunner" />

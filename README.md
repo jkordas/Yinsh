@@ -40,9 +40,17 @@ When each player place all rings on board, placement phase is finished.<br />
 Then ring movement phase is continued until one of the players wins or all of markers are used.<br />
 ![Single ring move](./res/single_ring_move.png "Single ring move")
 
-
 As long as given position is incorrect, player will be asked for new one.<br />
 ![Wrong position examples](./res/wrong_position_examples.png "Wrong position examples")
+
+Black player completed a row of black markers.<br />
+![Five in row completed](./res/five_in_row_completed.png "Five in row completed")
+
+Row of five black markers is deleted.<br />
+![Row deleted](./res/row_deleted.png "Row deleted")
+
+Black players scores three points. Game is finished.<br />
+![Game finished](./res/game_finished.png "Game finished")
 
 
 ###Code
@@ -69,15 +77,11 @@ move.py
 *  PlacementMove - Ring placement move representation (first 5 moves)
 *  RingMove - Ring movement representation (rest of the moves)
 
-main.py - run typical game<br />
-demo.py - run test demo
+main.py - run typical game `python -m yinsh.main`<br />
+demo.py - run test demo `python -m yinsh.demo`
 
 All test included in test directory.<br />
-
-### Unimplemented functionality
-
-* Possibility to let user choose which row to delete
-* Display user points, left markers
-* Add more unit tests
-* Complete playerStub classes for full game demo purpose
-
+Board class is covered with tests in 78%.<br />
+Game class cannot be easily tested because of input needed from user.
+Game demo file and player stubs was created to present basic game test.<br />
+Pylint score: 10/10.

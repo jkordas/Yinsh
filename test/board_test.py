@@ -1,15 +1,15 @@
 import unittest
 
-from board import Board
-from move import PlacementMove, RingMove
-from player import Player, PlayerType
+from yinsh.game_logic.board import Board
+from yinsh.utils.move import PlacementMove, RingMove
+from yinsh.utils.player import Player, PLAYER_TYPE
 
 
 class BoardTest(unittest.TestCase):
     def setUp(self):
         self.board = Board()
-        self.white_player = Player("TestWhitePlayer", PlayerType.WHITE)
-        self.black_player = Player("TestBlackPlayer", PlayerType.BLACK)
+        self.white_player = Player("TestWhitePlayer", PLAYER_TYPE['WHITE'])
+        self.black_player = Player("TestBlackPlayer", PLAYER_TYPE['BLACK'])
 
     def place_five_in_row(self):
         self.board.place_ring(self.white_player, PlacementMove(4, 0))
@@ -23,13 +23,27 @@ class BoardTest(unittest.TestCase):
         self.board.place_ring(self.white_player, PlacementMove(8, 4))
         self.board._place_marker(self.white_player, PlacementMove(8, 4))
 
+    def place_second_five_in_row(self):
+        self.board.place_ring(self.white_player, PlacementMove(2, 2))
+        self.board._place_marker(self.white_player, PlacementMove(2, 2))
+        self.board.place_ring(self.white_player, PlacementMove(3, 3))
+        self.board._place_marker(self.white_player, PlacementMove(3, 3))
+        self.board.place_ring(self.white_player, PlacementMove(4, 4))
+        self.board._place_marker(self.white_player, PlacementMove(4, 4))
+        self.board.place_ring(self.white_player, PlacementMove(5, 5))
+        self.board._place_marker(self.white_player, PlacementMove(5, 5))
+        self.board.place_ring(self.white_player, PlacementMove(6, 6))
+        self.board._place_marker(self.white_player, PlacementMove(6, 6))
+
     def test_white_ring_placement(self):
         self.board.place_ring(self.white_player, PlacementMove(2, 2))
-        self.assertEqual(Board._SIGNS['WHITE_RING'], self.board.get_field(2, 2), "White ring placement fails")
+        self.assertEqual(Board.SIGNS['WHITE_RING'], self.board.get_field(2, 2),
+                         "White ring placement fails")
 
     def test_black_ring_placement(self):
         self.board.place_ring(self.black_player, PlacementMove(2, 4))
-        self.assertEqual(Board._SIGNS['BLACK_RING'], self.board.get_field(2, 4), "Black ring placement fails")
+        self.assertEqual(Board.SIGNS['BLACK_RING'], self.board.get_field(2, 4),
+                         "Black ring placement fails")
 
     def test_ring_placement_wrong_position(self):
         self.assertRaises(ValueError, lambda: self.board.place_ring(self.white_player, PlacementMove(1, 0)))
@@ -43,7 +57,7 @@ class BoardTest(unittest.TestCase):
         self.board.place_ring(self.white_player, PlacementMove(5, 5))
 
         line = self.board._get_jumped_line(2, 2, 6, 6)
-        expected = [Board._EMPTY_FIELD, Board._EMPTY_FIELD, Board._SIGNS['WHITE_RING']]
+        expected = [Board.EMPTY_FIELD, Board.EMPTY_FIELD, Board.SIGNS['WHITE_RING']]
         self.assertEqual(expected, line, "Jump line test failed. Expected {0}, Got: {1}".format(expected, str(line)))
 
         line = self.board._get_jumped_line(5, 5, 6, 6)
@@ -51,7 +65,7 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(expected, line, "Jump line test failed. Expected {0}, Got: {1}".format(expected, str(line)))
 
         line = self.board._get_jumped_line(6, 6, 2, 2)
-        expected = [Board._SIGNS['WHITE_RING'], Board._EMPTY_FIELD, Board._EMPTY_FIELD]
+        expected = [Board.SIGNS['WHITE_RING'], Board.EMPTY_FIELD, Board.EMPTY_FIELD]
         self.assertEqual(expected, line, "Jump line test failed. Expected {0}, Got: {1}".format(expected, str(line)))
 
     def test_jumped_line_vertical(self):
@@ -59,7 +73,7 @@ class BoardTest(unittest.TestCase):
         self.board.place_ring(self.white_player, PlacementMove(2, 4))
 
         line = self.board._get_jumped_line(2, 2, 2, 10)
-        expected = [Board._SIGNS['WHITE_RING'], Board._EMPTY_FIELD, Board._EMPTY_FIELD]
+        expected = [Board.SIGNS['WHITE_RING'], Board.EMPTY_FIELD, Board.EMPTY_FIELD]
         self.assertEqual(expected, line, "Jump line test failed. Expected {0}, Got: {1}".format(expected, str(line)))
 
     def test_jump_too_many_empty_fields(self):
@@ -80,10 +94,10 @@ class BoardTest(unittest.TestCase):
         self.board.place_ring(self.white_player, PlacementMove(2, 6))
 
         self.board.move_ring(self.white_player, RingMove(2, 6, 3, 5))
-        self.assertEqual(Board._SIGNS['WHITE_MARKER'], self.board.get_field(2, 6))
+        self.assertEqual(Board.SIGNS['WHITE_MARKER'], self.board.get_field(2, 6))
 
         self.board.move_ring(self.white_player, RingMove(3, 5, 1, 7))
-        self.assertEqual(Board._SIGNS['BLACK_MARKER'], self.board.get_field(2, 6))
+        self.assertEqual(Board.SIGNS['BLACK_MARKER'], self.board.get_field(2, 6))
 
     def test_fives_in_row_vertical(self):
         self.board.place_ring(self.black_player, PlacementMove(2, 2))
@@ -160,9 +174,20 @@ class BoardTest(unittest.TestCase):
         result = self.board.get_fives_in_row_indexes(self.white_player)
         self.assertEqual([], result)
 
+    def test_get_row_to_delete(self):
+        self.place_five_in_row()
+        self.board.place_ring(self.white_player, PlacementMove(9, 5))
+        self.board._place_marker(self.white_player, PlacementMove(9, 5))
 
+        result = self.board.get_row_to_delete(self.white_player, RingMove(5, 1, 9, 5))
+        self.assertEqual([(5, 1), (6, 2), (7, 3), (8, 4), (9, 5)], result)
 
+        result = self.board.get_row_to_delete(self.white_player, RingMove(8, 4, 4, 0))
+        self.assertEqual([(4, 0), (5, 1), (6, 2), (7, 3), (8, 4)], result)
 
+    def test_two_rows_at_time_delete(self):
+        self.place_five_in_row()
+        self.place_second_five_in_row()
 
 
 
