@@ -1,6 +1,6 @@
-Kod musi działać
+OK Kod musi działać
 OK Kod powinien zawierać co najmniej 300 linii (kodu) / osobę
-Kod powinien przechodzić ocenę pylinta na 100% [z dokładnością do błędów zwracanych przez zewnętrzne biblioteki]
+OK Kod powinien przechodzić ocenę pylinta na 100% [z dokładnością do błędów zwracanych przez zewnętrzne biblioteki]
 OK Należy wykorzystać paradygmat programowania obiektowego
 OK Kod powinien zawierać unit testy
 OK Dostarczenie dokumentacji/opisu projektu
