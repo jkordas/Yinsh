@@ -1,7 +1,7 @@
-#Yinsh Game Documentation
+# Yinsh Game Documentation
 ![yinsh](./res/yinsh.jpg "yinsh")
 
-##Game description
+## Game description
 
 YINSH is an abstract strategy board game by game designer Kris Burm. It is the fifth game to be released in the GIPF Project.
 
@@ -15,12 +15,12 @@ victory-but also makes you weaker, because you have one less ring to play with. 
 
 [Extended online rules](http://www.gipf.com/yinsh/rules/rules.html)
 
-##Project description
+## Project description
 
 Whole game is displayed in text (ASCII) version. Two players make their moves alternately. Each move is preceded by
 short note about current player, type of movement and allowable input.
 
-###How to play
+### How to play
 
 Game starts with short intro with title and players rings and markers symbols.<br />
 ![Intro](./res/intro.png "Intro")
@@ -53,7 +53,7 @@ Black players scores three points. Game is finished.<br />
 ![Game finished](./res/game_finished.png "Game finished")
 
 
-###Code
+### Code
 
 Project consist of following classes:
 
